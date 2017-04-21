@@ -229,11 +229,29 @@ func (q *QRCode) Image(size int) image.Image {
 		size = realSize
 	}
 
+	// qrcode size hack
+	var padding int=0
+	if realSize>180 {
+		size = realSize+padding;
+
+	}else if 180>=realSize && realSize >100{
+		size = realSize*2+padding;
+
+	}else{
+		var ratio int=250/realSize;
+		size=ratio*realSize+padding;
+	}
+
 	// Size of each module drawn.
+	// int value
 	pixelsPerModule := size / realSize
 
 	// Center the symbol within the image.
 	offset := (size - realSize*pixelsPerModule) / 2
+	//log.Println("pixelsPerModule:", pixelsPerModule)
+	//log.Println("realSize:", realSize)
+	//log.Println("size:", size)
+	//log.Println("offset:", offset)
 
 	rect := image.Rectangle{Min: image.Point{0, 0}, Max: image.Point{size, size}}
 
